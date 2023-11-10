@@ -1,0 +1,49 @@
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './entities/user.entity';
+import { ActiveUserInterface } from 'src/interfaces/IActiveUser';
+import { UserRole } from 'src/interfaces/UserRole.enum';
+import { ActiveUser } from 'src/utils/ActiveUser';
+
+@Injectable()
+export class UsersService {
+  constructor(
+    @InjectRepository(User)
+    private readonly usersRepository: Repository<User>,
+  ) { }
+
+  create(createUserDto: CreateUserDto) {
+    return this.usersRepository.save(createUserDto);
+  }
+
+  findOneByEmail(email: string) {
+    return this.usersRepository.findOneBy({ email });
+  }
+
+  findByEmailWithPassword(email: string) {
+    return this.usersRepository.findOne({
+      where: { email },
+      select: ['id', 'first_name', 'last_name', 'email', 'password', 'role'],
+    });
+  }
+
+  findAll() {
+    return this.usersRepository.find();
+  }
+
+  findOne(id: number) {
+    return this.usersRepository.findOneBy({ id })
+  }
+
+ async update(id: number, updateUserDto: UpdateUserDto ) {
+      return this.usersRepository.update(id, updateUserDto)
+
+  }
+
+  remove(id: number) {
+    return this.usersRepository.delete(id)
+  }
+}

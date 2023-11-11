@@ -20,7 +20,7 @@ export class AuthService {
     private readonly mailerService: MailerService,
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
-  ) { }
+  ) {}
 
   async register(body: RegisterAuthDto) {
     try {
@@ -32,7 +32,6 @@ export class AuthService {
         ...body,
         password: await bcrypt.hash(body.password, 10),
       });
-    
     } catch (error) {
       throw new InternalServerErrorException({ message: error });
     }
@@ -111,18 +110,15 @@ export class AuthService {
       const temporalCode = user.password.slice(0, 6);
       if (temporalCode !== code) {
         throw new UnauthorizedException({ message: 'Invalid Code' });
-      }
-      else if (date <= formatDate) {
+      } else if (date <= formatDate) {
         throw new UnauthorizedException({ message: 'Expired Code' });
-      }
-      else {
+      } else {
         await this.usersService.update(user.id, {
           ...user,
           password: await bcrypt.hash(newPassword, 10),
         });
-        return user
+        return user;
       }
-
     } catch (error) {
       throw new InternalServerErrorException({ message: error });
     }

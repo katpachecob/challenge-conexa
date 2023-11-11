@@ -7,58 +7,103 @@ import { ProducerService } from '../src/producer/producer.service';
 import { AppModule } from '../src/app.module';
 
 describe('Producers', () => {
-  const jwtToken = 'your_jwt_token';
+  let jwtToken = '';
   let app: INestApplication;
-  const producerService = {
-    findAll: () => [
-      {
-        name: 'Producer one',
-        id: 1,
-        created_at: new Date(),
-        deleted_at: null,
-      },
-    ],
+  const mockProducerService = {
+    findAll: jest.fn(),
+    findOne: jest.fn(),
+    create: jest.fn(),
+    update: jest.fn(),
+    remove: jest.fn(),
   };
+
+  const temporaryProducers = [
+    { name: 'Producer One' },
+    { name: 'Producer Two' },
+  ];
+
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule],
     })
       .overrideProvider(ProducerService)
-      .useValue(producerService)
+      .useValue(mockProducerService)
       .compile();
 
-    app = moduleRef.createNestApplication();
 
+    app = moduleRef.createNestApplication();
     await app.init();
+
+    const loginResponse = await request(app.getHttpServer())
+      .post('/auth/login')
+      .send({ email: 'kathepachecobaca33@gmail.com', password: '12345678' })
+      .expect(200);
+    jwtToken = loginResponse.body.token;
   });
 
-  // beforeEach(async()=>{
-  //     const loginRes = await request(app.getHttpServer())
-  //     .post('/login')
-  //     .send({
-  //         email: "kathepachecobaca@gmail.com",
-  //         password: "12345678"
-  //     })
-  //     });
-  // })
-  // it(`/GET producers`, () => {
-  //     return request(app.getHttpServer())
-  //         .get('/producers')
-  //         .expect(200)
-  //         .expect({
-  //             data: producerService.findAll(),
-  //         });
-  // });
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 
-  it(`/POST should create a producer`, () => {
-    const body = {
-      name: 'Producer Test',
+  describe('/POST should create a producer', () => {
+    it(`should be ok`, async () => {
+      const body = {
+        name: 'Producer Test',
+      };
+
+      const response = await request(app.getHttpServer())
+        .post('/producers')
+        .set('Authorization', `Bearer ${jwtToken}`)
+        .send(body);
+
+      if (response.body.role === 'admin') {
+        expect(response.status).toBe(201);
+        expect(response.body.length).toBe(1);
+      } else {
+        expect(response.status).toBe(403);
+      }
+    });
+  });
+
+  describe('/GET should return all the producers', () => {
+    beforeEach(() => {
+      jest.spyOn(mockProducerService, 'findAll').mockResolvedValueOnce(temporaryProducers);
+
+    });
+
+    it('should return OK', async () => {
+      const response = await request(app.getHttpServer())
+        .get('/producers')
+        .set('Authorization', `Bearer ${jwtToken}`)
+      expect(response.body.length).toEqual(2);
+      expect(response.status).toBe(200)
+    });
+  });
+
+  describe('/GET/:id should return a producer by ID', () => {
+    const producerId = 2;
+    const mockProducer = {
+      id: producerId,
+      name: 'Temporary Producer Two',
     };
-    return request(app.getHttpServer())
-      .post('/producers')
-      .set('Authorization', `Bearer ${jwtToken}`)
-      .send(body)
-      .expect(201);
+  
+    beforeEach(() => {
+      jest.spyOn(mockProducerService, 'findOne').mockResolvedValueOnce(mockProducer);
+    });
+  
+    it('should return OK', async () => {
+      const response = await request(app.getHttpServer())
+        .get(`/producers/${producerId}`)
+        .set('Authorization', `Bearer ${jwtToken}`);
+  
+      expect(response.status).toBe(200);
+      expect(response.body.id).toBe(producerId);
+      expect(response.body.name).toBe('Temporary Producer Two');
+    });
+  });
+
+  afterAll(async () => {
+    await app.close();
   });
 });

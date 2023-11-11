@@ -2,10 +2,10 @@ import {
   BadRequestException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
-
 import { InjectRepository } from '@nestjs/typeorm';
 import { Movie } from './entities/movie.entity';
 import { Repository } from 'typeorm';
@@ -46,7 +46,11 @@ export class MoviesService {
   //Find a movie
   async findOne(id: number) {
     try {
-      const result = await this.movieRepository.findOneBy({ id });
+      let result = await this.movieRepository.find({
+        where: {
+          id: id,
+        },
+      });
       if (!result) {
         throw new BadRequestException({ message: 'Not results' });
       }
@@ -56,14 +60,22 @@ export class MoviesService {
     }
   }
 
-  update(id: string, updateMovieDto: UpdateMovieDto) {
-    return `This action updates a #${id} breed`;
+  async update(id: number, updateMovieDto: UpdateMovieDto) {
+    try {
+      const existingMovie = await this.movieRepository.findOneBy({ id });
+      if (!existingMovie) {
+        throw new BadRequestException({ message: 'Not results' });
+      }
+      return existingMovie;
+    } catch (error) {
+      throw new InternalServerErrorException({ message: error.detail });
+    }
   }
 
   //Delete a movie
   async remove(id: number) {
     try {
-      const movie = await this.findOne(id);
+      const movie = await this.movieRepository.findOneBy({ id });
       if (!movie) {
         throw new BadRequestException({ message: 'Movie does not exist' });
       }

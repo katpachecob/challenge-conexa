@@ -40,8 +40,8 @@ export class MoviesController {
 
   @Auth(UserRole.ADMIN)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMovies: UpdateMovieDto) {
-    return this.moviesService.update(id, updateMovies);
+  update(@Param('id') id: number, @Body() updateMovies: UpdateMovieDto) {
+    return this.moviesService.update(+id, updateMovies);
   }
 
   @HttpCode(HttpStatus.OK)

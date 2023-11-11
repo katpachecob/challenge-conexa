@@ -6,15 +6,17 @@ import { setupSwagger } from './swagger/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.setGlobalPrefix('api/')
+  app.setGlobalPrefix('api/');
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true
-    })
-  )
+      whitelist: true,
+    }),
+  );
 
   await setupSwagger(app);
 
-  await app.listen(parseInt(process.env.PORT) || 8000, () => console.log(`Running in port ${process.env.PORT || 8000}`));
+  await app.listen(parseInt(process.env.PORT) || 8000, () =>
+    console.log(`Running in port ${process.env.PORT || 8000}`),
+  );
 }
 bootstrap();

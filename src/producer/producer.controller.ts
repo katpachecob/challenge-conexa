@@ -1,19 +1,27 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ProducerService } from './producer.service';
 import { CreateProducerDto } from './dto/create-producer.dto';
 import { UpdateProducerDto } from './dto/update-producer.dto';
-import { Auth } from 'src/configuration/decorator/auth.decorator';
-import { UserRole } from 'src/interfaces/UserRole.enum';
+import { Auth } from '..//configuration/decorator/auth.decorator';
+import { UserRole } from '../interfaces/UserRole.enum';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
-@Auth(UserRole.ADMIN)
 @ApiBearerAuth()
-@Controller('producer')
-@ApiTags('producers') 
+@Controller('producers')
+@ApiTags('producers')
 export class ProducerController {
   constructor(private readonly producerService: ProducerService) {}
 
   @Post()
+  @Auth(UserRole.ADMIN)
   create(@Body() createProducerDto: CreateProducerDto) {
     return this.producerService.create(createProducerDto);
   }
@@ -29,11 +37,16 @@ export class ProducerController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: number, @Body() updateProducerDto: UpdateProducerDto) {
+  @Auth(UserRole.ADMIN)
+  update(
+    @Param('id') id: number,
+    @Body() updateProducerDto: UpdateProducerDto,
+  ) {
     return this.producerService.update(id, updateProducerDto);
   }
 
   @Delete(':id')
+  @Auth(UserRole.ADMIN)
   remove(@Param('id') id: number) {
     return this.producerService.remove(id);
   }

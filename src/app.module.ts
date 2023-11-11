@@ -6,16 +6,17 @@ import { DbModule } from './configuration/db/db.module';
 import { MoviesModule } from './movies/movies.module';
 import { ProducerModule } from './producer/producer.module';
 
-
 @Module({
-  imports: [ConfigModule.forRoot({
-    isGlobal: true,
-    envFilePath: '.env'
-  }), 
-  DbModule,
-  UsersModule, 
-  AuthModule, 
-  MoviesModule, ProducerModule,
-  ]
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+    }),
+    DbModule,
+    UsersModule,
+    AuthModule,
+    MoviesModule,
+    ProducerModule,
+  ],
 })
-export class AppModule { }
+export class AppModule {}

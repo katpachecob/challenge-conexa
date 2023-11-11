@@ -1,7 +1,12 @@
-
-import { UserRole } from 'src/interfaces/UserRole.enum';
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, BeforeInsert } from 'typeorm';
-
+import { UserRole } from '../../interfaces/UserRole.enum';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  BeforeInsert,
+} from 'typeorm';
 
 @Entity('users')
 export class User {
@@ -23,11 +28,11 @@ export class User {
   @Column({
     type: 'enum',
     enum: UserRole,
-    default: UserRole.USUARIO, 
+    default: UserRole.USUARIO,
   })
   role: UserRole;
 
-  @Column({ default: true }) 
+  @Column({ default: true })
   active: boolean;
 
   @CreateDateColumn({ type: 'timestamp' })
@@ -38,6 +43,6 @@ export class User {
 
   @BeforeInsert()
   emailToLowerCase() {
-      this.email = this.email.toLowerCase();
+    this.email = this.email.toLowerCase();
   }
 }

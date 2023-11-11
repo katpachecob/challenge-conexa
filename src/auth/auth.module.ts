@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { UsersModule } from 'src/users/users.module';
+import { UsersModule } from '../users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MailerModule } from '@nestjs-modules/mailer';
 
 @Module({
-  imports:[
+  imports: [
     UsersModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
@@ -16,28 +16,28 @@ import { MailerModule } from '@nestjs-modules/mailer';
         return {
           secret: configService.get<string>('JWT_SECRET'),
           signOptions: {
-            expiresIn: configService.get<string | number>('JWT_EXPIRATION_TIME') || '1d',
+            expiresIn:
+              configService.get<string | number>('JWT_EXPIRATION_TIME') || '1d',
           },
         };
       },
       inject: [ConfigService],
- 
     }),
     MailerModule.forRootAsync({
-      imports:[ConfigModule],
+      imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (config: ConfigService) => {
-        return{
+        return {
           transport: {
             host: 'smtp.gmail.com',
             auth: {
               user: config.get<string>('EMAIL_SENDER'),
-              pass: config.get<string>('EMAIL_PASS')
+              pass: config.get<string>('EMAIL_PASS'),
             },
           },
-        }}
-    }
-    ),
+        };
+      },
+    }),
   ],
   controllers: [AuthController],
   providers: [AuthService],

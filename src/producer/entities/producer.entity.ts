@@ -1,7 +1,12 @@
-
-import { Movie } from 'src/movies/entities/movie.entity';
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-
+import { Movie } from '../../movies/entities/movie.entity';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  CreateDateColumn,
+  DeleteDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class Producer {
@@ -11,6 +16,12 @@ export class Producer {
   @Column()
   name: string;
 
-  @OneToMany(() => Movie, movie => movie.producer)
+  @CreateDateColumn()
+  created_at: string;
+
+  @DeleteDateColumn()
+  deleted_at: string;
+
+  @OneToMany(() => Movie, (movie) => movie.producer)
   movies: Movie[];
 }

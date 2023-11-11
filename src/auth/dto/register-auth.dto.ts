@@ -1,5 +1,11 @@
-import { Transform } from "class-transformer";
-import { IsNotEmpty, IsString, MinLength, IsEnum, IsEmail, Matches } from "class-validator";
+import { Transform } from 'class-transformer';
+import {
+  IsNotEmpty,
+  IsString,
+  MinLength,
+  IsEmail,
+  Matches,
+} from 'class-validator';
 
 export class RegisterAuthDto {
   @IsString()
@@ -27,5 +33,4 @@ export class RegisterAuthDto {
     message: 'Last name must contain only alphabetic characters',
   })
   last_name: string;
-
 }

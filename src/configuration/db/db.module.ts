@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Movie } from 'src/movies/entities/movie.entity';
-import { User } from 'src/users/entities/user.entity';
+import { Movie } from '../../movies/entities/movie.entity';
+import { User } from '../../users/entities/user.entity';
 
 @Module({
   imports: [
@@ -17,16 +17,12 @@ import { User } from 'src/users/entities/user.entity';
         username: configService.get<string>('DB_USER'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_NAME'),
-        
-        entities: [
-          User,
-          Movie
-        ],
+
+        entities: [User, Movie],
         autoLoadEntities: true,
         synchronize: true,
-      
-      })
-    })
+      }),
+    }),
   ],
 })
-export class DbModule { }
+export class DbModule {}

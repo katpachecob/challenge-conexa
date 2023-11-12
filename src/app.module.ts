@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { DbModule } from './configuration/db/db.module';
 import { MoviesModule } from './movies/movies.module';
 import { ProducerModule } from './producer/producer.module';
+import { AppController } from './app.controller';
 
 @Global()
 @Module({
@@ -19,5 +20,7 @@ import { ProducerModule } from './producer/producer.module';
     MoviesModule,
     ProducerModule,
   ],
+  controllers:[AppController],
+  // providers:[AppService]
 })
 export class AppModule {}

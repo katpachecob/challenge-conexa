@@ -10,6 +10,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Movie } from './entities/movie.entity';
 import { Repository } from 'typeorm';
 import { Producer } from '../producer/entities/producer.entity';
+import searchHelper from 'src/utils/api-open';
 
 @Injectable()
 export class MoviesService {
@@ -41,6 +42,11 @@ export class MoviesService {
     } catch (error) {
       throw new InternalServerErrorException({ message: error.detail });
     }
+  }
+
+  async findHelper(movie: string){
+    const findProducer = await searchHelper(movie)
+    return findProducer
   }
 
   //Find a movie

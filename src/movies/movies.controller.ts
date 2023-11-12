@@ -18,7 +18,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @Controller('movies')
 @ApiBearerAuth()
-@ApiTags('movies')
+@ApiTags('Movies')
 export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
 
@@ -26,6 +26,12 @@ export class MoviesController {
   @Post()
   create(@Body() createMovieDto: CreateMovieDto) {
     return this.moviesService.create(createMovieDto);
+  }
+
+
+  @Post('/search-helper')
+  findHelper(@Body() movie: string) {
+    return this.moviesService.findHelper(movie);
   }
 
   @Get()

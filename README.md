@@ -2,7 +2,7 @@
 
 ## Let's start!!
 
-![Image Profile](<img src="/views/profile.png" width="160" height="160">)
+![Image Profile](<img src="views/profile.png" width="160" height="160">)
 
 ### Documentation
 

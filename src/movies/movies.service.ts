@@ -26,7 +26,7 @@ export class MoviesService {
   //Create a movie
   async create(createMovieDto: CreateMovieDto) {
     try {
-      const producer = await this.validateProducer(createMovieDto.producer);
+      const producer = await this.validateProducer(createMovieDto.producer)
       return await this.movieRepository.save({
         ...createMovieDto,
         producer: producer,
@@ -101,19 +101,17 @@ export class MoviesService {
 
   //Validation of the producer
   private async validateProducer(producerName: string) {
-    try {
+
       const producerRes = await this.producerRepository.findOneBy({
         name: producerName,
       });
-      if (!producerRes) {
-        throw new BadRequestException({
-          message: 'A Producer with that name does not exist',
-        });
-      }
 
+      if (!producerRes) {
+        throw new BadRequestException('Breed not found');
+      }
+    
       return producerRes;
-    } catch (error) {
-      throw new InternalServerErrorException({ message: error.detail });
-    }
+
+     
   }
 }

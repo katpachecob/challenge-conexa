@@ -1,5 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
-import { Producer } from 'src/producer/entities/producer.entity';
+import { IsNotEmpty, IsString, MinLength } from 'class-validator';
 
 export class CreateMovieDto {
   @IsString()
@@ -16,5 +15,5 @@ export class CreateMovieDto {
   description: string;
 
   @IsString()
-  producer: string
+  producer?: string
 }

@@ -2,7 +2,7 @@
 
 ## Let's start!!
 
-![Image Profile](/views/profile.jpg)
+![Image Profile](/views/profile.png)
 
 ### Documentation
 

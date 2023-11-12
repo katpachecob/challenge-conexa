@@ -2,7 +2,8 @@
 
 ## Let's start!!
 
-![Image Profile](<img src="views/profile.png" width="160" height="160">)
+![Image Profile](/views/profile.png){ width=50% }
+
 
 ### Documentation
 

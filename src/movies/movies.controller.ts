@@ -28,7 +28,6 @@ export class MoviesController {
     return this.moviesService.create(createMovieDto);
   }
 
-
   @Post('/search-helper')
   findHelper(@Body() movie: string) {
     return this.moviesService.findHelper(movie);

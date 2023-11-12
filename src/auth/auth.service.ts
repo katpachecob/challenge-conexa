@@ -13,7 +13,6 @@ import { ForgotAuthDto } from './dto/forgot-auth.dto';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { forgotPass } from './templates/forgot-pass.template';
 import { generateRandomPassword } from '../utils/generateRandomPassword';
-import { UserRole } from 'src/interfaces/UserRole.enum';
 
 @Injectable()
 export class AuthService {
@@ -23,7 +22,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async register({email, first_name, last_name, password}: RegisterAuthDto) {
+  async register({ email, first_name, last_name, password }: RegisterAuthDto) {
     try {
       const user = await this.usersService.findOneByEmail(email);
       if (user) {

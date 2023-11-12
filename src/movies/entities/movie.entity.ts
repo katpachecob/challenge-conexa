@@ -20,7 +20,6 @@ export class Movie {
   @Column({ default: 'Not defined' })
   released_year: string;
 
-
   @Column()
   description: string;
 

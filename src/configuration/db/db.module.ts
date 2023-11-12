@@ -12,7 +12,7 @@ import { User } from '../../users/entities/user.entity';
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
         type: 'postgres',
-        host:  configService.get<string>('DB_HOST'),
+        host: configService.get<string>('DB_HOST'),
         port: parseInt(process.env.DB_PORT) || 5432,
         username: configService.get<string>('DB_USER'),
         password: configService.get<string>('DB_PASSWORD'),
@@ -20,18 +20,18 @@ import { User } from '../../users/entities/user.entity';
 
         entities: [User, Movie],
         autoLoadEntities: true,
-        synchronize: true, 
-        ssl: process.env.POSTGRES_SSL === "true",
+        synchronize: true,
+        ssl: process.env.POSTGRES_SSL === 'true',
         extra: {
           ssl:
-            process.env.POSTGRES_SSL === "true"
+            process.env.POSTGRES_SSL === 'true'
               ? {
-                rejectUnauthorized: false,
-              }
+                  rejectUnauthorized: false,
+                }
               : null,
         },
       }),
     }),
   ],
 })
-export class DbModule { }
+export class DbModule {}

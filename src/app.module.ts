@@ -20,6 +20,6 @@ import { AppController } from './app.controller';
     MoviesModule,
     ProducerModule,
   ],
-  controllers:[AppController],
+  controllers: [AppController],
 })
 export class AppModule {}

@@ -10,7 +10,6 @@ export class CreateMovieDto {
   @IsNotEmpty()
   released_year: string;
 
-
   @IsString()
   @IsNotEmpty()
   description: string;

@@ -5,6 +5,9 @@ export class AppController {
   @Get()
   @Render('index')
   root() {
-    return { message: 'Hello world! Welcome to this challenge. Documentation is in /documentation' };
+    return {
+      message:
+        'Hello world! Welcome to this challenge. Documentation is in /documentation',
+    };
   }
 }

@@ -22,7 +22,6 @@ describe('Producers', () => {
     { name: 'Producer Two' },
   ];
 
-
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule],
@@ -30,7 +29,6 @@ describe('Producers', () => {
       .overrideProvider(ProducerService)
       .useValue(mockProducerService)
       .compile();
-
 
     app = moduleRef.createNestApplication();
     await app.init();
@@ -68,16 +66,17 @@ describe('Producers', () => {
 
   describe('/GET should return all the producers', () => {
     beforeEach(() => {
-      jest.spyOn(mockProducerService, 'findAll').mockResolvedValueOnce(temporaryProducers);
-
+      jest
+        .spyOn(mockProducerService, 'findAll')
+        .mockResolvedValueOnce(temporaryProducers);
     });
 
     it('should return OK', async () => {
       const response = await request(app.getHttpServer())
         .get('/producers')
-        .set('Authorization', `Bearer ${jwtToken}`)
+        .set('Authorization', `Bearer ${jwtToken}`);
       expect(response.body.length).toEqual(2);
-      expect(response.status).toBe(200)
+      expect(response.status).toBe(200);
     });
   });
 
@@ -87,16 +86,18 @@ describe('Producers', () => {
       id: producerId,
       name: 'Temporary Producer Two',
     };
-  
+
     beforeEach(() => {
-      jest.spyOn(mockProducerService, 'findOne').mockResolvedValueOnce(mockProducer);
+      jest
+        .spyOn(mockProducerService, 'findOne')
+        .mockResolvedValueOnce(mockProducer);
     });
-  
+
     it('should return OK', async () => {
       const response = await request(app.getHttpServer())
         .get(`/producers/${producerId}`)
         .set('Authorization', `Bearer ${jwtToken}`);
-  
+
       expect(response.status).toBe(200);
       expect(response.body.id).toBe(producerId);
       expect(response.body.name).toBe('Temporary Producer Two');

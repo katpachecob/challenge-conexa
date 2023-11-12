@@ -2,7 +2,7 @@ import {
   BadRequestException,
   Injectable,
   InternalServerErrorException,
-  NotFoundException,
+
 } from '@nestjs/common';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
@@ -44,15 +44,15 @@ export class MoviesService {
     }
   }
 
-  async findHelper(movie: string){
-    const findProducer = await searchHelper(movie)
-    return findProducer
+  async findHelper(movie: string) {
+    const findProducer = await searchHelper(movie);
+    return findProducer;
   }
 
   //Find a movie
   async findOne(id: number) {
     try {
-      let result = await this.movieRepository.find({
+      const result = await this.movieRepository.find({
         where: {
           id: id,
         },

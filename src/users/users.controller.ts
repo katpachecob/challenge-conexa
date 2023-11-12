@@ -14,7 +14,7 @@ import { Auth } from '../configuration/decorator/auth.decorator';
 import { UserRole } from '../interfaces/UserRole.enum';
 import { ApiTags } from '@nestjs/swagger';
 
-@Auth(UserRole.ADMIN)
+
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
@@ -29,12 +29,13 @@ export class UsersController {
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(+id);
   }
-
+  
+  @Auth(UserRole.ADMIN)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(+id, updateUserDto);
   }
-
+  @Auth(UserRole.ADMIN)
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
   remove(@Param('id') id: string) {

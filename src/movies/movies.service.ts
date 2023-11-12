@@ -67,7 +67,7 @@ export class MoviesService {
     }
   }
 
-  async update(id: number, updateMovieDto: UpdateMovieDto, user: ActiveUserInterface) {
+  async update(id: number, updateMovieDto: UpdateMovieDto) {
     try {
 
       const existingMovie = await this.movieRepository.findOneBy({ id });

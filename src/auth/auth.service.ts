@@ -13,6 +13,7 @@ import { ForgotAuthDto } from './dto/forgot-auth.dto';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { forgotPass } from './templates/forgot-pass.template';
 import { generateRandomPassword } from '../utils/generateRandomPassword';
+import { UserRole } from 'src/interfaces/UserRole.enum';
 
 @Injectable()
 export class AuthService {
@@ -22,15 +23,17 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async register(body: RegisterAuthDto) {
+  async register({email, first_name, last_name, password}: RegisterAuthDto) {
     try {
-      const user = await this.usersService.findOneByEmail(body.email);
+      const user = await this.usersService.findOneByEmail(email);
       if (user) {
         throw new BadRequestException({ message: 'Email register already' });
       }
       return await this.usersService.create({
-        ...body,
-        password: await bcrypt.hash(body.password, 10),
+        email,
+        first_name,
+        last_name,
+        password: await bcrypt.hash(password, 10),
       });
     } catch (error) {
       throw new InternalServerErrorException({ message: error });

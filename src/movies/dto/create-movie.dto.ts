@@ -10,9 +10,6 @@ export class CreateMovieDto {
   @IsNotEmpty()
   released_year: string;
 
-  @IsString()
-  @IsNotEmpty()
-  cover_picture: string;
 
   @IsString()
   @IsNotEmpty()

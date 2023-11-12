@@ -21,6 +21,5 @@ import { AppController } from './app.controller';
     ProducerModule,
   ],
   controllers:[AppController],
-  // providers:[AppService]
 })
 export class AppModule {}

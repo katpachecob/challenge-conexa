@@ -1,17 +1,19 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { setupSwagger } from './swagger/swagger';
-import { HttpExceptionFilter } from './utils/httpException';
+
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
+import { ValidationPipe } from '@nestjs/common';
+import { HttpExceptionFilter } from './utils/httpException';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   app.setGlobalPrefix('api/');
-
-  app.useGlobalFilters(new HttpExceptionFilter());
-  app.useStaticAssets(join(__dirname, '..', 'public'));
+  app.useGlobalPipes(new ValidationPipe());
+  // app.useGlobalFilters(new HttpExceptionFilter());
+  // app.useStaticAssets(join(__dirname, '..', 'public'));
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('hbs');
 

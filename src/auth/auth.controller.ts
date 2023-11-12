@@ -10,8 +10,7 @@ import { AuthService } from './auth.service';
 import { RegisterAuthDto } from './dto/register-auth.dto';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { ActiveUser } from '../utils/ActiveUser';
-import { UserRole } from '../interfaces/UserRole.enum';
-import { Auth } from '../configuration/decorator/auth.decorator';
+
 import { ActiveUserInterface } from '../interfaces/IActiveUser';
 import { ApiTags } from '@nestjs/swagger';
 import { ForgotAuthDto } from './dto/forgot-auth.dto';

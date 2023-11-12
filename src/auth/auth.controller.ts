@@ -42,7 +42,6 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Get('profile')
-  @Auth(UserRole.USUARIO)
   getProfile(@ActiveUser() user: ActiveUserInterface) {
     return this.authService.profile(user);
   }

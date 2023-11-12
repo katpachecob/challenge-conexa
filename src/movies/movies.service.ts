@@ -72,7 +72,7 @@ export class MoviesService {
       if (!existingMovie) {
         throw new BadRequestException({ message: 'Not results' });
       }
-      return existingMovie;
+      return this.movieRepository.update(id, updateMovieDto);
     } catch (error) {
       throw new InternalServerErrorException({ message: error.detail });
     }

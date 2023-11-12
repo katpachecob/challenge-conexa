@@ -11,6 +11,7 @@ import { Movie } from './entities/movie.entity';
 import { Repository } from 'typeorm';
 import { Producer } from '../producer/entities/producer.entity';
 import searchHelper from 'src/utils/api-open';
+import { ActiveUserInterface } from 'src/interfaces/IActiveUser';
 
 @Injectable()
 export class MoviesService {
@@ -20,7 +21,7 @@ export class MoviesService {
 
     @InjectRepository(Producer)
     private readonly producerRepository: Repository<Producer>,
-  ) {}
+  ) { }
 
   //Create a movie
   async create(createMovieDto: CreateMovieDto) {
@@ -66,18 +67,24 @@ export class MoviesService {
     }
   }
 
-  async update(id: number, updateMovieDto: UpdateMovieDto) {
+  async update(id: number, updateMovieDto: UpdateMovieDto, user: ActiveUserInterface) {
     try {
+
       const existingMovie = await this.movieRepository.findOneBy({ id });
       if (!existingMovie) {
         throw new BadRequestException({ message: 'Not results' });
       }
-      
-      return this.movieRepository.update(id, updateMovieDto);
+
+      return await this.movieRepository.update(id, {
+        ...updateMovieDto,
+        producer: updateMovieDto.producer ? await this.validateProducer(updateMovieDto.producer) : undefined,
+      })
     } catch (error) {
       throw new InternalServerErrorException({ message: error.detail });
     }
   }
+
+
 
   //Delete a movie
   async remove(id: number) {

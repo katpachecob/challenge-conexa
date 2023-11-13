@@ -1,6 +1,5 @@
 # Conexa Challenge👾👋🏽
 
-## Let's start!!
 <p align="center">
 <img src='views/profile.png' width='260'>
 </p>

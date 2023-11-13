@@ -22,17 +22,18 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async register({ email, first_name, last_name, password }: RegisterAuthDto) {
+  async register(body: RegisterAuthDto) {
     try {
-      const user = await this.usersService.findOneByEmail(email);
+      const user = await this.usersService.findOneByEmail(body.email);
       if (user) {
         throw new BadRequestException({ message: 'Email register already' });
       }
       return await this.usersService.create({
-        email,
-        first_name,
-        last_name,
-        password: await bcrypt.hash(password, 10),
+        // email,
+        // first_name,
+        // last_name,
+        ...body,
+        password: await bcrypt.hash(body.password, 10),
       });
     } catch (error) {
       throw new InternalServerErrorException({ message: error });

@@ -20,7 +20,7 @@ import { User } from '../../users/entities/user.entity';
 
         entities: [User, Movie],
         autoLoadEntities: true,
-        synchronize: true,
+        // synchronize: true,
         ssl: process.env.POSTGRES_SSL === 'true',
         extra: {
           ssl:

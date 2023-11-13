@@ -25,15 +25,18 @@ export class MoviesService {
 
   //Create a movie
   async create(createMovieDto: CreateMovieDto) {
-    try {
-      const producer = await this.validateProducer(createMovieDto.producer)
+
+
+       const producer = await this.validateProducer(createMovieDto.producer )
+        if (!producer) {
+          throw new BadRequestException('Producer not found');
+        }
+
       return await this.movieRepository.save({
         ...createMovieDto,
         producer: producer,
       });
-    } catch (error) {
-      throw new InternalServerErrorException({ message: error.detail });
-    }
+   
   }
 
   //Find all the movies
@@ -68,7 +71,6 @@ export class MoviesService {
   }
 
   async update(id: number, updateMovieDto: UpdateMovieDto) {
-    try {
 
       const existingMovie = await this.movieRepository.findOneBy({ id });
       if (!existingMovie) {
@@ -77,11 +79,9 @@ export class MoviesService {
 
       return await this.movieRepository.update(id, {
         ...updateMovieDto,
-        producer: updateMovieDto.producer ? await this.validateProducer(updateMovieDto.producer) : undefined,
+        producer: updateMovieDto.producer ? await this.validateProducer( updateMovieDto.producer ) : undefined,
       })
-    } catch (error) {
-      throw new InternalServerErrorException({ message: error.detail });
-    }
+ 
   }
 
 
@@ -98,20 +98,15 @@ export class MoviesService {
       throw new InternalServerErrorException({ message: error.detail });
     }
   }
-
-  //Validation of the producer
-  private async validateProducer(producerName: string) {
-
-      const producerRes = await this.producerRepository.findOneBy({
-        name: producerName,
-      });
-
-      if (!producerRes) {
-        throw new BadRequestException('Breed not found');
-      }
-    
-      return producerRes;
-
-     
+  
+  private async validateProducer(producer: string) {
+    const producerEntity = await this.producerRepository.findOneBy({ name: producer });
+  
+    if (!producerEntity) {
+      throw new BadRequestException('Producer not found');
+    }
+  
+    return producerEntity;
   }
+
 }

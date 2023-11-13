@@ -23,7 +23,7 @@ export class Movie {
   @Column()
   description: string;
 
-  @ManyToOne(() => Producer, (producer) => producer.movies, { eager: true })
+  @ManyToOne(() => Producer, (producer) => producer.name, { eager: true })
   producer: Producer;
 
   @CreateDateColumn({ type: 'timestamp' })

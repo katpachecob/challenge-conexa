@@ -15,7 +15,7 @@ export class ProducerService {
   constructor(
     @InjectRepository(Producer)
     private readonly producerRepository: Repository<Producer>,
-  ) {}
+  ) { }
 
   async create(createProducerDto: CreateProducerDto) {
     try {
@@ -34,8 +34,17 @@ export class ProducerService {
   }
 
   async findOne(id: number) {
+
+    const result = await this.producerRepository.findOneBy({ id });
+    if (!result) {
+      throw new BadRequestException({ message: 'Not results' });
+    }
+    return result;
+  }
+
+  async findOneByName(name: string) {
     try {
-      const result = await this.producerRepository.findOneBy({ id });
+      const result = await this.producerRepository.findOneBy({ name });
       if (!result) {
         throw new BadRequestException({ message: 'Not results' });
       }
@@ -60,14 +69,12 @@ export class ProducerService {
   }
 
   async remove(id: number) {
-    try {
-      const producer = await this.findOne(id);
-      if (!producer) {
-        throw new BadRequestException({ message: 'Producer does not exist' });
-      }
-      return this.producerRepository.softDelete({ id });
-    } catch (error) {
-      throw new InternalServerErrorException({ message: error.detail });
+
+    const producer = await this.findOne(id);
+    if (!producer) {
+      throw new BadRequestException({ message: 'Producer does not exist' });
     }
+    return this.producerRepository.softDelete({ id });
+
   }
 }

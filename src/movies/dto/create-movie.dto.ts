@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
 
 export class CreateMovieDto {
   @IsString()
@@ -15,5 +15,6 @@ export class CreateMovieDto {
   description: string;
 
   @IsString()
+  @IsOptional()
   producer?: string
 }

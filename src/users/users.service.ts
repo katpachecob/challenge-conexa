@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -10,7 +10,7 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
-  ) {}
+  ) { }
 
   create(createUserDto: RegisterAuthDto) {
     return this.usersRepository.save(createUserDto);
@@ -32,7 +32,11 @@ export class UsersService {
   }
 
   findOne(id: number) {
-    return this.usersRepository.findOneBy({ id });
+    const foundUser = this.usersRepository.findOneBy({ id });
+    if(!foundUser){
+      throw new BadRequestException({ message: 'Not results' });
+    }
+    return foundUser
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
